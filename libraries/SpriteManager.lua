@@ -58,6 +58,10 @@ end
 ---@param y number
 ---@param r number
 ---@param scale number
-function Sprite:draw(x, y, r, scale)
-    love.graphics.draw(self.originalImage, self.frames[self.currentFrame], x or 0, y or 0, r or 0, scale or 1)
+function Sprite:draw(x, y, r, scale, direct)
+    love.graphics.draw(self.originalImage, self.frames[self.currentFrame], x or 0, y or 0, r or 0, (scale or 1) * (direct or 1), scale or 1 )
+end
+
+function Sprite:Null()
+    self.currentFrame = 1
 end
