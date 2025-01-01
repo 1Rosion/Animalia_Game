@@ -17,27 +17,12 @@ function Vector2:Clone(vec)
     return Vector2:new(vec2.x, vec2.y)
 end
 
-function Vector2:NormalizeVector(vec)
-    if not vec and self.x == 1 or self.y == 1 then
-        return Vector2:new(.71, .71)
-    end
-
-    return self:Clone()
-end
-
-function Vector2:Substracting(vec1, vec2)
-    if not vec1 then return Vector2:new(0, 0) end
-    if not vec2 then return Vector2:new(self.x - vec1.x, self.y - vec1.y) end
-    return Vector2:new(vec1.x - vec2.x, vec1.y - vec2.y)
-end
-
-function Vector2:abs()
-    self.x = math.abs(self.x)
-    self.y = math.abs(self.y)
-
-    return self
-end
-
-function Vector2:Distance()
+function Vector2:LunigimeaVectorului ()
     return math.sqrt(self.x^2 + self.y^2)
+end
+
+function Vector2:Normalize()
+    local lungime = self:LunigimeaVectorului()
+    if lungime == 0 then lungime = lungime + 0.001 end
+    return Vector2:new(self.x / lungime, self.y / lungime)
 end

@@ -10,11 +10,20 @@ function InputSystem:init()
     else
         self.joistic = nil
     end
-    
+
+    -- if not self.joistic:isGamepad() then
+    --     self.joistic = nil
+    -- end
 end
 
 function InputSystem:getVector2()
-    local vec2 = { x = 0, y = 0}
+    local vec2 = Vector2:new(0, 0)
+    -- local vec2 ={ x = 0, y = 0}
+
+    if self.joistic ~= nil and self.joistic:isGamepad() then
+        vec2.x = self.joistic:getAxis(1)
+        vec2.y = self.joistic:getAxis(2)
+    end
 
     if love.keyboard.isDown("a") or love.keyboard.isDown("left") then
         vec2.x = -1
@@ -30,11 +39,6 @@ function InputSystem:getVector2()
 
     if love.keyboard.isDown("s") or love.keyboard.isDown("down") then
         vec2.y = 1
-    end
-
-    if self.joistic ~= nil and self.joistic:isGamepad() then
-        vec2.x = self.joistic:getAxis(1)
-        vec2.y = self.joistic:getAxis(2)
     end
 
     return vec2

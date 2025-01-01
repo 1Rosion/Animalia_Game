@@ -21,6 +21,7 @@ function Player:new( x, y, w, h, speed, collisionClass )
 end
 
 function Player:move(vector2)
+    vector2 = vector2:Normalize()
     self.body:setLinearVelocity(vector2.x * self.speed, vector2.y * self.speed)
 end
 
