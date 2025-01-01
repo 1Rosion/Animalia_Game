@@ -1,4 +1,5 @@
 love = require "love"
+scale = 4
 
 local wf = require "libraries.windfield"
 world = wf.newWorld(0, 0, true)
@@ -18,7 +19,7 @@ local camera = require "libraries.camera"
 cam = camera()
 
 local myPlayer = Player:new(100, 100, 40, 20, 400, "Player")
-scale = 4
+
 
 function love.load()
     love.window.setTitle('Animalia')
@@ -42,11 +43,12 @@ function love.keyboard.wasPressed(key)
 end
 
 function love.update(dt)
+    InputSystem:init()
+    
     myPlayer:update( dt )
     world:update(dt)
 
-
-    local x, y = myPlayer:GetCameraPosition(scale)
+    local x, y = myPlayer:GetCameraPosition()
     cam:lookAt(x, y)
     love.keyboard.keysPressed = {}
 end
@@ -54,12 +56,28 @@ end
 function love.draw()
     cam:attach()
     love.graphics.draw(love.graphics.newImage("Resource/Tiles/Beach_Tile.png"), 0, 0, 0, 4)
+        --
         myPlayer:draw()
         world:draw()
 
-        local vec = InputSystem:getVector2()
+        --[ Camer look at Point
+            local r,g,b,a = love.graphics.getColor()
+            love.graphics.setColor(1, 0, 0, 1)
+            local x, y = myPlayer:GetCameraPosition()
+            love.graphics.circle('fill', x, y, 3)
+            love.graphics.setColor(r, g, b, a)
+        --]
 
-        cam:detach()
-        love.graphics.print(vec.x .. " " .. vec.y)
+        --[ Cercul in care se va misca punctul camerei
+            local x, y = myPlayer.body:getPosition()
+            y = y - 16 * scale
+            love.graphics.circle('line', x, y, 50)
+        --]
+    --    
+    cam:detach()
+
+
+    local vec = InputSystem:getVector2()
+    love.graphics.print(vec.x .. " " .. vec.y)
 end
 

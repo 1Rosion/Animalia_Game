@@ -30,3 +30,14 @@ function Vector2:Substracting(vec1, vec2)
     if not vec2 then return Vector2:new(self.x - vec1.x, self.y - vec1.y) end
     return Vector2:new(vec1.x - vec2.x, vec1.y - vec2.y)
 end
+
+function Vector2:abs()
+    self.x = math.abs(self.x)
+    self.y = math.abs(self.y)
+
+    return self
+end
+
+function Vector2:Distance()
+    return math.sqrt(self.x^2 + self.y^2)
+end
