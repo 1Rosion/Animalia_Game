@@ -40,12 +40,26 @@ function Player:AnimationManager (vector2)
         newAnim = "walk_left"
     end
 
-    if self.currentAnimation ~= newAnim then
-        if self.currentAnimation == "walk_left" then
-            self.animations["walk_right"]:Null()
-        elseif self.animations[self.currentAnimation] then
+    if self.currentAnimation ~= newAnim and not (newAnim == "iddle_bottom" and string.sub(self.currentAnimation, 1, 5) == "iddle") then
+        if self.animations[self.currentAnimation] then
             self.animations[self.currentAnimation]:Null()
+        elseif self.currentAnimation == "walk_left" then
+            self.animations["walk_right"]:Null()
+        elseif self.currentAnimation == "iddle_left" then
+            self.animations["iddle_right"]:Null()
         end
+
+        if newAnim == "iddle_bottom" then
+            if self.currentAnimation == "walk_bottom" then
+            elseif self.currentAnimation == "walk_right" then
+               newAnim = "iddle_right"
+            elseif self.currentAnimation == "walk_up" then
+                newAnim = "iddle_up"
+            elseif self.currentAnimation == "walk_left" then
+                newAnim = "iddle_left"
+            end
+        end
+
         self.currentAnimation = newAnim
     end
 end
@@ -60,6 +74,8 @@ function Player:update( dt )
         self.animations[self.currentAnimation]:update( dt )
     elseif self.currentAnimation == "walk_left" then
         self.animations["walk_right"]:update( dt )
+    elseif self.currentAnimation == "iddle_left" then
+        self.animations["iddle_right"]:update( dt )
     end
 
     local inputVector = InputSystem:getVector2()
@@ -69,14 +85,18 @@ function Player:update( dt )
 end
 
 function Player:draw()
-    if self.currentAnimation == "walk_left" then
-        local x, y = self:GetPosition()
-
-        self.animations["walk_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
-    elseif self.animations[self.currentAnimation] then
+    if self.animations[self.currentAnimation] then
         local x, y = self:GetPosition()
 
         self.animations[self.currentAnimation]:draw(x, y, 0, 4)
+    elseif self.currentAnimation == "walk_left" then
+        local x, y = self:GetPosition()
+
+        self.animations["walk_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
+    elseif self.currentAnimation == "iddle_left" then
+        local x, y = self:GetPosition()
+
+        self.animations["iddle_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
     end
 end
 
@@ -101,11 +121,10 @@ function Player:GetCameraPosition ()
     return self.camera.cameraPosition.x, self.camera.cameraPosition.y
 end
 
--- Trebuie sa creez o biluta care merge fictiv din urma jucatorului si ii creste viteza cu cat este mai departe de jucator, aceasta bila este pozitia camerei
 
 --[[
     Planuri pentru maine:
-        Realizarea miscarii camerei cu intarziere
+        -- Realizarea miscarii camerei cu intarziere
         Inceperea genrarii -- cel putin gandirea la cum trebuie sa arate
     Planuri la general : 
         Realizarea primului animal
