@@ -6,17 +6,16 @@ world = wf.newWorld(0, 0, true)
 
 world:addCollisionClass("Player")
 
+local camera = require "libraries.camera"
+cam = camera()
 
+require "elem"
 require "libraries.bassicFunctions"
 require "libraries.vector2d"
-require "elem"
 require "libraries.SpriteManager"
 require "Entity"
 require "InputSystem"
 require "Player"
-
-local camera = require "libraries.camera"
-cam = camera()
 
 local myPlayer = Player:new(100, 100, 40, 20, 400, "Player")
 

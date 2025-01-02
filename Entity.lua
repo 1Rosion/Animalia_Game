@@ -1,13 +1,5 @@
 Entity = {}
 
---[[
-    Chestii pe care trebuie sa le aiba un element de tip entity:
-        Body - un obiect de tip corp fizic
-        Sprite - cu animatii si o functie pentru gestionarea acestora
-        
-]]
-
-
 function Entity:new( x, y, w, h, speed, collisionClass )
     local obj = {}
 
