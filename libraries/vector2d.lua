@@ -24,5 +24,8 @@ end
 function Vector2:Normalize()
     local lungime = self:LunigimeaVectorului()
     if lungime == 0 then lungime = lungime + 0.001 end
-    return Vector2:new(self.x / lungime, self.y / lungime)
+    if lungime >= 1 then
+        return Vector2:new(self.x / lungime, self.y / lungime)
+    else return Vector2:new(self.x, self.y)
+    end
 end

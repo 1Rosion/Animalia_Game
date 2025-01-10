@@ -25,7 +25,7 @@ require "Generator.generator"
 
 
 local seed = 1126948
-Generator:newMap(10, 10, seed)
+Generator:newMap(100, 100, seed)
 -- local image, image1 = Generator:GettingDataFromGPU()
 local row = 1
 local myPlayer = Player:new(100, 100, 40, 20, 400, "Player")
@@ -78,7 +78,8 @@ end
 
 --[[ 
     Ce fac azi: 
-        * Sa pot merge doar pe pamanat
+        -- reparat ******* Reparat normalizarea vectorului pentru a putea merge incet
+        * Sa pot merge doar pe pamanat -- implica generearea ge colidere
         * Aparitia plantelor -- Trebuie sa apara la inceput mai multe, dupa care sa creasca in ceva timp cate o planta
         * Constructie
 

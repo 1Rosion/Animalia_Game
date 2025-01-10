@@ -53,6 +53,7 @@ function Tree:new(x, y)
 
     obj.body = world : newBSGRectangleCollider (obj.pos.x + 17, obj.pos.y + 95, 30, 15, 10)
     obj.body:setType("static")
+    obj.body:setCollisionClass("Plant")
 
     setmetatable(obj, self)
     self.__index = self
