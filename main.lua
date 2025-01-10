@@ -5,6 +5,9 @@ local wf = require "libraries.windfield"
 world = wf.newWorld(0, 0, true)
 
 world:addCollisionClass("Player")
+world:addCollisionClass("Ground")
+world:addCollisionClass("Plant", {ignores = {"Ground"}})
+
 
 local camera = require "libraries.camera"
 cam = camera()
@@ -16,9 +19,18 @@ require "libraries.SpriteManager"
 require "Entity"
 require "InputSystem"
 require "Player"
+require "Plants.plant"
 
+require "Generator.generator"
+
+
+local seed = 1126948
+Generator:newMap(10, 10, seed)
+-- local image, image1 = Generator:GettingDataFromGPU()
+local row = 1
 local myPlayer = Player:new(100, 100, 40, 20, 400, "Player")
 
+Tree:new(0, 0)
 
 function love.load()
     love.window.setTitle('Animalia')
@@ -38,23 +50,37 @@ function love.update(dt)
     
     myPlayer:update( dt )
     world:update(dt)
-    
-    myPlayer:GetCameraPosition()
-    local x, y = myPlayer:GetCameraPosition()
-    cam:lookAt(x, y)
 end
 
 function love.draw()
     cam:attach()
-    love.graphics.draw(love.graphics.newImage("Resource/Tiles/Beach_Tile.png"), 0, 0, 0, 4)
         --
-        myPlayer:draw()
-        -- world:draw()
-    --    
+        world:draw()
+        Generator:DrawMap()
+        -- myPlayer:draw()
+
+        Draw()
+
+
+        if row <= Generator.h then
+            Generator:AutoTiling(row)
+            row = row + 1
+        end
+    --     local x , y = myPlayer:GetPosition()
+    --     x = x + 16 * scale
+    --     y = y + 16
+    --     love.graphics.circle('line', x, y, myPlayer.camera.radius)
+        myPlayer:GetCameraPosition()
+    --     love.graphics.circle('fill', x, y, 2)
+    -- --
     cam:detach()
-
-
-    local vec = InputSystem:getVector2()
-    love.graphics.print(vec.x .. " " .. vec.y)
 end
 
+--[[ 
+    Ce fac azi: 
+        * Sa pot merge doar pe pamanat
+        * Aparitia plantelor -- Trebuie sa apara la inceput mai multe, dupa care sa creasca in ceva timp cate o planta
+        * Constructie
+
+
+]]

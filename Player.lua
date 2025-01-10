@@ -17,6 +17,23 @@ function Player:new( x, y, w, h, speed, collisionClass )
         maxSpeed = obj.speed * 2
     }
 
+    obj.VisualElement = VisualElement:new(obj.animations["iddle_bottom"], 1, function ()
+        if obj.animations[obj.currentAnimation] then
+            local x, y = obj:GetPosition()
+            obj.animations[obj.currentAnimation]:draw(x, y, 0, 4)
+        elseif obj.currentAnimation == "walk_left" then
+            local x, y = obj:GetPosition()
+            obj.animations["walk_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
+        elseif obj.currentAnimation == "iddle_left" then
+            local x, y = obj:GetPosition()
+            obj.animations["iddle_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
+        end
+
+        return true
+    end)
+
+    obj.VisualElement.pivotY = 4
+
     setmetatable(obj, self)
     self.__index = function (table, key)
         return Player[key] or Entity[key]
@@ -67,6 +84,8 @@ end
 function Player:move(vector2)
     vector2 = vector2:Normalize()
     self.body:setLinearVelocity(vector2.x * self.speed, vector2.y * self.speed)
+    self.VisualElement.pos.x, self.VisualElement.pos.y = self.body:getPosition()
+    VisualSort(self.VisualElement.zIndex)
 end
 
 function Player:update( dt )
@@ -82,23 +101,25 @@ function Player:update( dt )
 
     self:move(inputVector)
     self:AnimationManager(inputVector)
+
+    cam:lookAt(self:GetCameraPosition())
 end
 
-function Player:draw()
-    if self.animations[self.currentAnimation] then
-        local x, y = self:GetPosition()
+-- function Player:draw()
+--     if self.animations[self.currentAnimation] then
+--         local x, y = self:GetPosition()
 
-        self.animations[self.currentAnimation]:draw(x, y, 0, 4)
-    elseif self.currentAnimation == "walk_left" then
-        local x, y = self:GetPosition()
+--         self.animations[self.currentAnimation]:draw(x, y, 0, 4)
+--     elseif self.currentAnimation == "walk_left" then
+--         local x, y = self:GetPosition()
 
-        self.animations["walk_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
-    elseif self.currentAnimation == "iddle_left" then
-        local x, y = self:GetPosition()
+--         self.animations["walk_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
+--     elseif self.currentAnimation == "iddle_left" then
+--         local x, y = self:GetPosition()
 
-        self.animations["iddle_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
-    end
-end
+--         self.animations["iddle_right"]:draw(x + 16 * 2 * scale, y, 0, 4, -1)
+--     end
+-- end
 
 function Player:GetPosition()
     local x, y = self.body:getPosition()
