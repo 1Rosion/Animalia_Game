@@ -11,7 +11,7 @@ function Plant:new (x, y, w, h)
 
     return obj
 end
-
+-- Flori, tufis, copac
 Flower = {}
 
 function Flower:new(x, y)
@@ -19,6 +19,8 @@ function Flower:new(x, y)
 
     obj.sprite = Sprite:new("Resource/Outdoor decoration/Outdoor_Decor_Free.png", 0, 128, 16, 16, 2, 0.1)
     obj.VE = VisualElement:new(obj.sprite, 1)
+    obj.VE.pos.x = x
+    obj.VE.pos.y = y
     obj.VE.pivotY = 50
 
     setmetatable(obj, self)
@@ -33,7 +35,9 @@ function Wafels:new(x, y)
     local obj = Plant:new(x, y)
 
     obj.sprite = Sprite:new("Resource/Outdoor decoration/Basic_Grass_Biom_things.png", 16, 48, 16, 16, 1, 0.1)
-    obj.VE = VisualElement:new(obj.sprite, 1, function () obj.sprite:draw(obj.pos.x, obj.pos.y, 0, scale) end)
+    obj.VE = VisualElement:new(obj.sprite, 1)
+    obj.VE.pos.x = x
+    obj.VE.pos.y = y
     obj.VE.pivotY = 60
 
     setmetatable(obj, self)
@@ -48,7 +52,9 @@ function Tree:new(x, y)
     local obj = Plant:new(x, y)
 
     obj.sprite = Sprite:new("Resource/Outdoor decoration/Basic_Grass_Biom_things.png", 0, 0, 16, 32, 1, 0.1)
-    obj.VE = VisualElement:new(obj.sprite, 1, function () obj.sprite:draw(obj.pos.x, obj.pos.y, 0, scale) end)
+    obj.VE = VisualElement:new(obj.sprite, 1)
+    obj.VE.pos.x = x
+    obj.VE.pos.y = y
     obj.VE.pivotY = 105
 
     obj.body = world : newBSGRectangleCollider (obj.pos.x + 17, obj.pos.y + 95, 30, 15, 10)

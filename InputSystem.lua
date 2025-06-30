@@ -10,10 +10,6 @@ function InputSystem:init()
     else
         self.joistic = nil
     end
-
-    -- if not self.joistic:isGamepad() then
-    --     self.joistic = nil
-    -- end
 end
 
 function InputSystem:getVector2()
@@ -42,4 +38,11 @@ function InputSystem:getVector2()
     end
 
     return vec2
+end
+
+function InputSystem:IsControlPressed()
+    if love.keyboard.isDown("lctrl") then
+        return true
+    end
+    return false
 end

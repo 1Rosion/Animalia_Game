@@ -83,7 +83,18 @@ end
 
 function Player:move(vector2)
     vector2 = vector2:Normalize()
-    self.body:setLinearVelocity(vector2.x * self.speed, vector2.y * self.speed)
+
+    local vx, vy = vector2.x * self.speed, vector2.y * self.speed
+
+    if InputSystem:IsControlPressed() then
+        vx, vy = vx / 2, vy / 2
+        self.camera.maxSpeed = self.speed
+    else
+        self.camera.maxSpeed = self.speed * 2
+        self:GetCameraPosition()
+    end
+
+    self.body:setLinearVelocity(vx, vy)
     self.VisualElement.pos.x, self.VisualElement.pos.y = self.body:getPosition()
     VisualSort(self.VisualElement.zIndex)
 end
@@ -131,7 +142,7 @@ function Player:GetCameraPosition ()
     pxy.y = pxy.y - 16 * scale -- pozitia initiala a camerei si pozitia in spre care se misca constat
 
     local distance = math.sqrt((self.camera.cameraPosition.x - pxy.x)^2 + (self.camera.cameraPosition.y - pxy.y)^2)
-    local dx, dy = (pxy.x - self.camera.cameraPosition.x) / distance, (pxy.y - self.camera.cameraPosition.y) / distance
+    local dx, dy = (pxy.x - self.camera.cameraPosition.x) * distance / 80, (pxy.y - self.camera.cameraPosition.y) * distance / 80
 
     if distance > self.camera.radius then
         self.camera.cameraPosition.x, self.camera.cameraPosition.y = self.camera.cameraPosition.x + (dx * 1.5), self.camera.cameraPosition.y + (dy * 1.5)
@@ -141,12 +152,3 @@ function Player:GetCameraPosition ()
 
     return self.camera.cameraPosition.x, self.camera.cameraPosition.y
 end
-
-
---[[
-    Planuri pentru maine:
-        -- Realizarea miscarii camerei cu intarziere
-        Inceperea genrarii -- cel putin gandirea la cum trebuie sa arate
-    Planuri la general : 
-        Realizarea primului animal
-]]

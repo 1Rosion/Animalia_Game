@@ -1,7 +1,29 @@
+--[[
+    AutoTiling {
+        Se verifica numarul de vecini si locaul acestora, dupa care se formeaza un cod.
+        Codul reprezinta insusi numarul si pozitia vecinilor, in dependenta de cod i se 
+        atribuie un anumit sprite. 
+
+        Metoda economiseste putere de procesare prin ceea ca nu verifica fiecare sprite,
+        nu se folosesc coditii ci doar un Dictionar cu spriteuri care primeste ca cheie
+        codul creat de aplicatoe.
+    }
+]]
+
+local data = {
+    lakeExpansionChance = 0.4,  -- 0
+    -- ground                   -- 1
+    treeChance = 0.2,           -- 2
+    flowerChance = 0.1,         -- 3
+    bushChance = 0.05,          -- 4
+}
+
+
 Generator = {
     w = 100,
     h = 100,
-    map = {},
+    map = {}, -- 0/1 pamant apa
+    mapPlants = nil,
     toDrawMap = {},
     grassSpites2 = {
         ["0011"] = Sprite:new("Resource/Tiles/Grass.png", 0 , 0, 16, 16, 1, 100),
@@ -100,7 +122,7 @@ function Generator:AddWater()
         self.map[x][y] = 0 -- Marchează punctul inițial ca apă
 
         -- Extindere lac
-        local expansionChance = 0.4 -- Probabilitatea de extindere
+        local expansionChance = data.lakeExpansionChance -- Probabilitatea de extindere
         local directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}} -- Direcții posibile: dreapta, jos, stânga, sus
         local frontier = {{x, y}} -- Frontieră pentru extindere
 
@@ -165,6 +187,52 @@ function Generator:DrawMap()
         for y, j in ipairs(i) do
             if self.grassSpites2[j] then
                 self.grassSpites2[j]:draw(32 * y * scale , 32 * x * scale,  0, 2 * scale)
+            end
+        end
+    end
+end
+
+---- Functia adauga elementele de tip copaci in lume, elementele initiale
+function Generator:AddTree()
+    Generator.mapPlants = Generator.mapPlants or Generator.map
+
+    for x, row in ipairs(Generator.mapPlants) do
+        for y, cell in ipairs(row) do
+            if cell == 1 and math.random() < data.treeChance then
+                Generator.mapPlants[x][y] = 2
+                -- cell = 2
+
+                Tree:new((32 * y + 16) * scale, (32 * x + 16) * scale + 16)
+            end
+        end
+    end
+end
+
+function Generator:AddFlower()
+    Generator.mapPlants = Generator.mapPlants or Generator.toDrawMap
+
+    for x, row in ipairs(Generator.mapPlants) do
+        for y, cell in ipairs(row) do
+            if cell == 1 and math.random() < data.flowerChance then
+                Generator.mapPlants[x][y] = 2
+
+
+                Flower:new(32 * y * scale, 32 * x * scale)
+            end
+        end
+    end
+end
+
+function Generator:AddWafels()
+    Generator.mapPlants = Generator.mapPlants or Generator.map
+
+    for x, row in ipairs(Generator.mapPlants) do
+        for y, cell in ipairs(row) do
+            if cell == 1 and math.random() < data.flowerChance then
+                Generator.mapPlants[x][y] = 2
+                -- cell = 2
+
+                Wafels:new(32 * y * scale, 32 * x * scale)
             end
         end
     end

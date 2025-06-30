@@ -5,7 +5,7 @@ function Vector2:new(x, y)
 
     obj.x = x or 0
     obj.y = y or 0
-    
+
     setmetatable(obj, self)
     self.__index = self
 

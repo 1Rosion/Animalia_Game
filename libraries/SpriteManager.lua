@@ -1,6 +1,5 @@
 Sprite = {}
 
-
 ---comment
 ---@param path string
 ---@param x number

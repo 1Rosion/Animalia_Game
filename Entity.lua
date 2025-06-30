@@ -13,7 +13,6 @@ function Entity:new( x, y, w, h, speed, collisionClass )
     obj.body:setCollisionClass(collisionClass)
     obj.body:setFixedRotation(true)
 
-
     obj.animations = {
         -- ["name"] = Sprite:new("Resource/Player/Player.png", 0, 0, 32, 32, 6, .2) -- animations have names and sprites
     }

@@ -100,10 +100,9 @@ function Draw()
                     zIndex[i].sprite:draw(zIndex[i].pos.x, zIndex[i].pos.y, 0, scale)
                 end
             end
-
-            love.graphics.setColor(1, 0, 0, 1)
-            love.graphics.circle("fill", zIndex[i].pos.x, zIndex[i].pos.y + zIndex[i].pivotY, 2)
-            love.graphics.setColor(1, 1, 1, 1)
+            -- love.graphics.setColor(1, 0, 0, 1)
+            -- love.graphics.circle("fill", zIndex[i].pos.x + (zIndex[i].sprite.width / 2) * scale, zIndex[i].pos.y + zIndex[i].pivotY, 2)
+            -- love.graphics.setColor(1, 1, 1, 1)
         end
     end
 end
